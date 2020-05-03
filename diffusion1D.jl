@@ -1,13 +1,14 @@
 using LinearAlgebra
 using PyPlot
 
-Nx = 50
+Nx = 100
+dx = 1/Nx
 mid = convert(Int64,Nx/2)
-Nt = 10
-h = 1/Nt #pas de temps
+h = 1e-3 #pas de temps
+Nt = convert(Int64,0.1/h)
 D = 1#coefficient de diffusion
-invlambda = 0.8
-beta =0.6
+invlambda = 1
+beta =5
 S = zeros(Nx, Nt)
 I = zeros(Nx,Nt)
 R = zeros(Nx, Nt)
@@ -22,7 +23,7 @@ S[mid+1, 1] = 0.8
 S[mid-1, 1] = 0.8
 
 #construction des matrices et des vecteurs du schema
-A = Tridiagonal(ones(3*Nx-1), -2.0*ones(3*Nx), ones(3*Nx-1))/h^2
+A = Tridiagonal(ones(3*Nx-1), -2.0*ones(3*Nx), ones(3*Nx-1))*Nx^2
 A[Nx+1,Nx] =0
 A[Nx,Nx+1] = 0
 A[2*Nx+1,2*Nx] =0
@@ -60,8 +61,8 @@ end
 
 #affichage
 figure()
-X = [i for i=1:Nx]
-T = [t for t=1:Nt]
+X = [i*dx for i=1:Nx]
+T = [t*h for t=1:Nt]
 surf(T, X, S, rstride=10, cstride=10)
 surf(T, X, I, rstride=10, cstride=10)
 surf(T, X, R, rstride=10, cstride=10)
