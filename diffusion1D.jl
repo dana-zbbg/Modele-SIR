@@ -5,10 +5,10 @@ Nx = 100
 dx = 1/Nx
 mid = convert(Int64,Nx/2)
 h = 1e-3 #pas de temps
-Nt = convert(Int64,0.1/h)
+Nt = 100
 D = 1#coefficient de diffusion
-invlambda = 1
-beta =5
+gamma = 1 #coefficient de guérison
+beta =0.1 #coefficient de contamination
 S = zeros(Nx, Nt)
 I = zeros(Nx,Nt)
 R = zeros(Nx, Nt)
@@ -32,11 +32,12 @@ Id = Diagonal(ones(3*Nx))
 B = zeros(3*Nx, 3*Nx)
 for i=Nx+1:2*Nx
     B[i,i] = 1
-    B[i+Nx,i]
+    B[i+Nx,i] = -1
 end
 
-SIR = zeros(3*Nx)#variable de stockage
-SI = zeros(3*Nx)
+#initialisation variables de stockage
+SIR = zeros(3*Nx)#stockage des grangeurs S,I et R
+SI = zeros(3*Nx) #produit SxI
 SIR[1:Nx] = S[:,1]
 SIR[Nx+1:2*Nx] = I[:,1]
 SIR[2*Nx+1:3*Nx] = R[:,1]
@@ -44,7 +45,7 @@ for i=1:Nx
     SI[i] = S[i,1]*R[i,1]
     SI[Nx+i] = -SI[i]
 end
-C = inv(Id-h*D*A+h*invlambda*B)
+C = inv(Id-h*D*A+h*gamma*B)
 
 #implementation du schema Euler implicite
 for t=2:Nt
