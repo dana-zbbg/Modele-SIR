@@ -18,7 +18,7 @@ for x=1:Nx
     S[x,1] = sin(x*pi*1/Nx)
     #I[x,1] = 0.5*sin(x*pi*1/Nx)
 end
-I[mid,1] = 0.2
+I[mid,1] = 0.2#pic d'infectes au milieu
 I[mid-1,1] = 0.1
 I[mid+1,1] = 0.1
 I[mid-2,1] = 0.05
@@ -69,7 +69,7 @@ X = [i*dx for i=1:Nx]
 T = [t*h for t=1:Nt]
 surf(T, X, S, rstride=10, cstride=10)
 surf(T, X, I, rstride=10, cstride=10)
-#surf(T, X, R, rstride=10, cstride=10)
+surf(T, X, R, rstride=10, cstride=10)
 xlabel("temps")
 ylabel("espace")
 zlabel("densité de population")
